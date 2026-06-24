@@ -4,6 +4,7 @@
 - Maybe - add proper window rules for dialogs and pop-ups and stuff in all WM configs.
 
 ## Configuration
+### Fedora
 - Disable installing weak dependencies in DNF.
 - Configure networking.
 - Setup RPM Fusion.
@@ -11,14 +12,14 @@
 
 ## Software
 ### System
-|Software|Fedora|Alpine Linux|Void Linux|Note|
-|---|---|---|---|---|
+|Software|Fedora|Debian|Alpine Linux|Void Linux|Note|
+|---|---|---|---|---|---|
+|Archive Utils|tar, unzip|tar, unzip||unzip, xz|
+|Network & WiFi|wpa_supplicant, NetworkManager, NetworkManager-tui, NetworkManager-wifi|network-manager||NetworkManager|
+|Volume Management Utils|udisks2, gvfs, gvfs-mtp, gvfs-gphoto2|udisks2, gvfs, gvfs-backends, libmtp-runtime, gphoto2||udisks2, gvfs, gvfs-mtp, gvfs-gphoto2|
+|Download Utils|wget, aria2|wget, aria2||wget, aria2|wget, aria2|
 |Greeter|greetd, tuigreet||greetd, tuigreet|
-|Network & WiFi|wpa_supplicant, NetworkManager, NetworkManager-tui, NetworkManager-wifi||NetworkManager|
-|FFmpeg|ffmpeg, ffmpeg-libs|ffmpeg, ffmpeg-libs|ffmpeg|
-|Archive Utils|tar, unzip||unzip, xz|
-|Volume Management Utils|udisks2, gvfs, gvfs-mtp, gvfs-gphoto2||udisks2, gvfs, gvfs-mtp, gvfs-gphoto2|
-|Download Utils|wget, aria2|wget, aria2|wget, aria2|
+|FFmpeg|ffmpeg, ffmpeg-libs|ffmpeg|ffmpeg, ffmpeg-libs|ffmpeg|
 
 ### Desktop/X11
 |Software|Fedora|Alpine Linux|Void Linux|Note|
@@ -32,7 +33,7 @@
 |flameshot|flameshot|
 |dunst|dunst|dunst|dunst|
 |NewtorkManager Tray|network-manager-applet||network-manager-applet|
-|X11 Lock|xlock, xss-lock, xidlehook (⚒)|
+|X11 Lock|xlock, xss-lock|
 |Misc|brightnessctl|||
 
 ### Applications (general)
@@ -81,5 +82,4 @@
 
 ### Developement
 |C/C++ Toolchain|@developement-tools, @c-developement, clang, clang-tools-extra||gcc, make, cmake, pkg-config|
-|Rust Toolchain|rust, cargo||rustup|
 |VSCode|🌐||vscode|
