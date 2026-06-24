@@ -1,0 +1,77 @@
+# TODO:
+# - picom support
+# - per-window floating state
+# - fullscreen support
+# - generalized strut support
+# - hot-reloading or atleast restarting
+
+# --- autostart ---
+exec sh -c "~/bin/set-wallpaper.sh"
+exec dunst
+exec sh -c "xss-lock -- ~bin/lock.sh &"
+
+# --- looks ---
+pad 1 1 1 1
+
+set border_width 1
+
+set border_focus #357ec7
+set border_unfocus #222222
+
+# --- mouse ---
+set stack_mouse_modifier Mod4
+
+# --- workspaces ---
+rename 1 # name of the first group on startup is 'default'
+add 2
+add 3
+add 4
+
+use 1
+
+# --- bindings ---
+bind on Mod4+q exec xterm
+bind on Mod4+e exec pcmanfm
+bind on Mod4+d exec rofi -show drun -theme ~/.local/share/themes/my-theme/rofi/theme.rasi -show-icons
+
+bind on Mod4+v stack flip
+bind on Mod4+c kill
+
+bind on Mod4+Control+l exec ~/bin/lock.sh
+bind on Mod4+Escape exec ~/bin/power-menu.sh
+bind on Mod4+m quit
+
+bind on Mod4+h focus left
+bind on Mod4+j focus down 
+bind on Mod4+k focus up
+bind on Mod4+l focus right
+
+bind on Mod4+Shift+h swap left
+bind on Mod4+Shift+j swap down 
+bind on Mod4+Shift+k swap up
+bind on Mod4+Shift+l swap right
+
+bind on Mod4+o hsplit 1/2
+bind on Mod4+p vsplit 1/2
+bind on Mod4+BackSpace remove
+
+bind on Mod4+1 use 1
+bind on Mod4+2 use 2
+bind on Mod4+3 use 3
+bind on Mod4+4 use 4
+
+bind on Mod4+Shift+1 sendto 1
+bind on Mod4+Shift+2 sendto 2
+bind on Mod4+Shift+3 sendto 3
+bind on Mod4+Shift+4 sendto 4
+
+bind on Print         exec flameshot gui --clipboard --path ~/Pictures/Screenshots
+bind on Shift+Print   exec flameshot gui
+bind on Control+Print exec flameshot full --clipboard --path ~/Pictures/Screenshots
+
+bind on XF86AudioRaiseVolume exec ~/bin/vol-ctl.sh up
+bind on XF86AudioLowerVolume exec ~/bin/vol-ctl.sh down
+bind on XF86AudioMute        exec ~/bin/vol-ctl.sh mute
+
+bind on XF86MonBrightnessUp   exec ~/bin/brightness-ctl.sh up
+bind on XF86MonBrightnessDown exec ~/bin/brightness-ctl.sh down

@@ -1,0 +1,73 @@
+escape Super_L
+
+# --- misc ----
+startup_message off
+rudeness 12
+warp on
+
+# --- autostart ---
+exec sh -c "~/bin/set-wallpaper.sh"
+exec sh -c "dunst &"
+exec sh -c "picom &"
+exec sh -c "xss-lock -- ~/bin/lock.sh"
+
+# --- looks ---
+defborder 1
+defpadding 0 0 0 0
+defbarpadding 4 8 4 8
+
+# --- workspaces ---
+exec rpws init 4 -k
+
+# --- bar ---
+set winname class
+set fgcolor white
+set bgcolor black
+set bargravity center
+
+# --- bindings ---
+bind q exec xterm
+bind e exec pcmanfm
+bind d exec sh -c "rofi -show drun -theme ~/.local/share/themes/my-theme/rofi/theme.rasi -show-icons"
+
+bind c kill
+
+bind semicolon colon
+bind Escape abort
+bind C-l exec sh -c "~/bin/lock.sh"
+bind R restart
+bind Delete exec sh -c "~/bin/power-menu.sh"
+bind m quit
+
+bind h focusleft
+bind j focusdown
+bind k focusup
+bind l focusright
+
+bind H exchangeleft
+bind J exchangedown
+bind K exchangeup
+bind L exchangeright
+
+bind o hsplit
+bind p vsplit
+bind BackSpace remove
+
+bind b prev
+bind n next
+
+bind 1 exec rpws 1
+bind 2 exec rpws 2
+bind 3 exec rpws 3
+bind 4 exec rpws 4
+
+bind Print   exec sh -c "flameshot gui --clipboard --path ~/Pictures/Screenshots"
+bind S-Print exec sh -c "flameshot gui"
+bind C-Print exec sh -c "flameshot full --clipboard --path ~/Pictures/Screenshots"
+
+bind XF86AudioRaiseVolume exec sh -c "~/bin/vol-ctl.sh up"
+bind XF86AudioLowerVolume exec sh -c "~/bin/vol-ctl.sh down"
+bind XF86AudioMute        exec sh -c "~/bin/vol-ctl.sh mute"
+
+bind XF86MonBrightnessUp   exec sh -c "~/bin/brightness-ctl.sh up"
+bind XF86MonBrightnessDown exec sh -c "~/bin/brightness-ctl.sh down"

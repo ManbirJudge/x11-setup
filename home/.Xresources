@@ -1,0 +1,24 @@
+! cursor
+Xcursor.theme: BreezeX-Light
+Xcursor.size: 24
+
+! ---
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.hinstyle: hintfull
+Xft.rgba: rgb
+
+! xterm
+xterm*faceName: monospace
+xterm*faceSize: 10
+
+xterm*background: #111
+xterm*foreground: #eee
+
+xterm*saveLines: 4096
+
+xterm*termName: xterm-256color
+
+xterm*vt100.translations: #override \
+    Shift Ctrl <Key>C: copy-selection(CLIPBOARD) \n\
+    Shift Ctrl <Key>V: insert-selection(CLIPBOARD)

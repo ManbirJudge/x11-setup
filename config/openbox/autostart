@@ -1,0 +1,7 @@
+picom &
+feh --bg-fill --randomize ~/Pictures/Wallpapers/* &
+tint2 &
+nm-applet &
+dunst &
+xss-lock -- ~/bin/lock.sh &
+xidlehook --not-when-fullscreen --timer 600 'systemctl suspend' '' &

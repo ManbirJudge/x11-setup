@@ -1,0 +1,100 @@
+#!/bin/sh
+
+mod=Mod4
+
+hc() {
+    herbstclient "$@"
+}
+
+# --- apps ---
+term=xterm
+lightTerm=xterm
+fileMgr=pcmanfm
+menu='rofi -show drun -theme ~/.local/share/themes/my-theme/rofi/theme.rasi -show-icons'
+
+# --- autostart ---
+~/bin/set-wallpaper.sh
+dunst &
+nm-applet &
+tint2 &
+picom &
+xss-lock -- ~bin/lock.sh &
+
+# --- looks ---
+hc set window_gap 1
+hc set frame_gap 0
+
+hc set window_border_width 1
+hc set frame_border_width 0
+
+hc set always_show_frame 0
+hc set frame_bg_transparent 1
+
+hc attr theme.active.color '#357ec7'
+hc attr theme.normal.color '#222222'
+hc attr theme.urgent.color '#cc241d'
+
+hc attr theme.padding_top 0
+hc attr theme.padding_left 0
+hc attr theme.padding_right 0
+hc attr theme.padding_bottom 0
+
+# --- workspaces ---
+hc rename default 1
+for i in 2 3 4 5 6 7 8 9; do
+    hc add "$i"
+done
+
+# --- mosue ---
+hc mousebind $mod-Button1 move
+hc mousebind $mod-Button3 resize
+
+hc set focus_follows_mouse true
+
+# --- bindings ---
+hc keybind $mod+q spawn $term
+hc keybind $mod+Shift+q spawn $lightTerm
+hc keybind $mod+e spawn $fileMgr
+hc keybind $mod+d spawn $menu
+
+hc keybind $mod+c close
+hc keybind $mod+v floating toggle
+hc keybind $mod+f fullscreen toggle
+
+hc keybind $mod+Ctrl+l spawn ~/bin/lock.sh
+hc keybind $mod+Shift+r reload
+hc keybind $mod+Escape spawn ~/bin/power-menu.sh
+hc keybind $mod+m quit
+
+hc keybind $mod+h focus left
+hc keybind $mod+j focus down
+hc keybind $mod+k focus up
+hc keybind $mod+l focus right
+
+hc keybind $mod+Shift+h shift left
+hc keybind $mod+Shift+j shift down
+hc keybind $mod+Shift+k shift up
+hc keybind $mod+Shift+l shift right
+
+hc keybind $mod+o split right
+hc keybind $mod+p split bottom
+hc keybind $mod+BackSpace remove
+
+for i in 1 2 3 4 5 6 7 8 9; do
+    hc keybind $mod+$i use "$i"
+    hc keybind $mod+Shift+$i move "$i"
+done
+
+hc keybind Print       spawn flameshot gui --path ~/Pictures/Screenshots --raw | xclip -selection clipboard -t image/png
+hc keybind Shift+Print spawn flameshot gui
+hc keybind Ctrl+Print  spawn flameshot full --path ~/Pictures/Screenshots --raw | xclip -selection clipboard -t image/png
+
+hc keybind XF86AudioRaiseVolume spawn ~/bin/vol-ctl.sh up
+hc keybind XF86AudioLowerVolume spawn ~/bin/vol-ctl.sh down
+hc keybind XF86AudioMute        spawn ~/bin/vol-ctl.sh mute
+
+hc keybind XF86MonBrightnessUp   spawn ~/bin/brightness-ctl.sh up
+hc keybind XF86MonBrightnessDown spawn ~/bin/brightness-ctl.sh down
+
+# -------
+hc emit_hook reload

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# --- autostart ---
+~/bin/set-wallpaper.sh
+dunst &
+nm-applet &
+tint2 &
+picom &
+xss-lock -- ~bin/lock.sh &
+sxhkd &
+
+# --- looks ---
+bspc config border_width 1
+bspc config window_gap   1
+
+bspc config focused_border_color "#357ec7"
+bspc config normal_border_color "#222222"
+bspc config active_border_color "#333333"
+bspc config urgent_border_color "#cc241d"
+
+# --- workspaces ---
+bspc monitor -d 1 2 3 4 5 6 7 8 9
+
+# --- mouse ---
+bspc config pointer_modifier mod4
+
+bspc config pointer_action1 move
+bspc config pointer_action3 resize_side
+
+bspc config focus_follows_pointer true

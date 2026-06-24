@@ -1,0 +1,7 @@
+- enable greetd. configure it.
+- isntall and enable dbus
+- install elogind. don't enable it - it is started by dbus on void
+- install and eanble polkit
+- unzip
+- enable NetworkManager. disable dhcpd, wpa_supplicant
+- tint2

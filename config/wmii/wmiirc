@@ -1,0 +1,236 @@
+#!/bin/sh
+
+export WMII_CONFPATH="$HOME/.config/wmii"
+
+wmiiscript=wmiirc
+. wmii.sh
+
+MOD=Mod4
+
+# --- apps ---
+term=xterm
+fileMgr=pcmanfm
+menu="rofi -show drun -theme ~/.local/share/themes/my-theme/rofi/theme.rasi -show-icons"
+
+# --- autostart ---
+~/bin/set-wallpaper.sh &
+dunst &
+nm-applet &
+witray &
+picom &
+xss-lock -- ~/bin/lock.sh &
+
+# --- looks ---
+font="xft:sans:size=11"
+colors_normal="#eeeeee #111111 #222222"
+colors_focus="#eeeeee #111111 #357ec7"
+
+wmiir write /ctl <<!
+    font $font
+
+    border 1
+    
+    normcolors  $colors_normal
+    focuscolors $colors_focus
+!
+
+# --- mouse ---
+wmiir write /ctl <<!
+    grabmod $MOD
+!
+
+# --- bar ---
+notice_timeout=5
+notice_bar=/rbar/!notice
+
+echo colors $colors_normal | wmiir create $notice_bar
+
+# --- menu ---
+# built-in program menu
+hist_loc="${WMII_CONFPATH%%:*}/history"
+hist_size=1000
+
+prog_list_path="$(wmiir namespace)/.wmii_prog_list"
+wi_proglist $PATH >$prog_list_path &
+
+# window titlebar menu
+wi_events <<'!'
+Menu Client-3-Fullscreen
+    wmiir xwrite /client/$1/ctl Fullscreen on
+Menu Client-3-Close
+    wmiir xwrite /client/$1/ctl kill
+Menu Client-3-Kill
+    wmiir xwrite /client/$1/ctl slay
+!
+
+# --- actions & events ---
+wi_events <<'!'
+# workspace events
+Event CreateTag
+    echo colors "$colors_normal$wi_newline" label "$@" | wmiir create "/lbar/$@"
+Event DestroyTag
+    wmiir remove "/lbar/$@"
+
+Event FocusTag
+    wmiir xwrite "/lbar/$@" colors "$colors_focus"
+Event UnfocusTag
+    wmiir xwrite "/lbar/$@" colors "$colors_normal"
+
+Event UrgentTag
+    shift
+    wmiir xwrite "/lbar/$@" label "*$@"
+Event NotUrgentTag
+    shift
+    wmiir xwrite "/lbar/$@" label "$@"
+
+Event LeftBarClick LeftBarDND
+    shift
+    wmiir xwrite /ctl view "$@"
+
+# notice event
+Event Notice
+    wmiir xwrite $notice_bar label $wi_arg
+    kill $xpid 2>/dev/null
+    { sleep $notice_timeout; wmiir xwrite $notice_bar 'label '; } &
+    xpid=$!
+
+# window events
+Event ClientMouseDown
+    wi_fnmenu Client $2 $1 &
+
+Event Unresponsive
+    {
+        client=$1; shift
+
+        msg="The following window is not responding. What would you like to do?$wi_newline"
+        resp=$(wihack -transient $client xmessage -nearmouse -buttons Kill,Wait -print -fn "$font" "$msg $(wmiir read /client/sel/label)")
+
+        if [ "$resp" = Kill ]; then
+            wmiir xwrite /client/$client/ctl slay &
+        fi
+    }&
+
+# actions
+Action status
+    set +xv
+    if wmiir remove /rbar/status 2>/dev/null; then
+        sleep 2
+    fi
+    echo colors "$colors_normal" | wmiir create /rbar/status
+    while status | wmiir write /rbar/status; do
+        sleep 1
+    done
+!
+
+# --- bindings ---
+wi_events <<'!'
+Key $MOD-q
+    wmiir setsid $term &
+Key $MOD-e
+    wmiir setsid $fileMgr &
+Key $MOD-d
+    wmiir setsid $menu &
+Key $MOD-Shift-d
+    eval wmiir setsid "$(wimenu -h "${hist_loc}.progs" -n $hist_size <$prog_list_path)" & 
+
+Key $MOD-c
+    wmiir xwrite /client/sel/ctl kill
+Key $MOD-v
+    wmiir xwrite /tag/sel/ctl send sel toggle
+Key $MOD-f
+    wmiir xwrite /client/sel/ctl Fullscreen toggle
+
+Key $MOD-semicolon
+    action $(wi_actions | wimenu -h "${hist_loc}.actions" -n $hist_size) &
+Key $MOD-Control-l
+    wmiir setsid ~/bin/lock.sh &
+Key $MOD-Escape
+    wmiir setsid ~/bin/power-menu.sh &
+Key $MOD-m
+    wmiir xwrite /ctl quit
+
+Key $MOD-h
+    wmiir xwrite /tag/sel/ctl select left
+Key $MOD-j
+    wmiir xwrite /tag/sel/ctl select down
+Key $MOD-k
+    wmiir xwrite /tag/sel/ctl select up
+Key $MOD-l
+    wmiir xwrite /tag/sel/ctl select right
+
+Key $MOD-Shift-h
+    wmiir xwrite /tag/sel/ctl send sel left
+Key $MOD-Shift-j
+    wmiir xwrite /tag/sel/ctl send sel down
+Key $MOD-Shift-k
+    wmiir xwrite /tag/sel/ctl send sel up
+Key $MOD-Shift-l
+    wmiir xwrite /tag/sel/ctl send sel right
+
+Key $MOD-w
+    wmiir xwrite /tag/sel/ctl colmode sel stack+max
+Key $MOD-s
+    wmiir xwrite /tag/sel/ctl colmode sel stack-max
+Key $MOD-x
+    wmiir xwrite /tag/sel/ctl colmode sel default-max
+
+Key Print      
+    wmiir setsid "flameshot gui --clipboard --path ~/Pictures/Screenshots" &
+Key Shift+Print
+    wmiir setsid "flameshot gui" &
+Key Control+Print
+
+Key XF86AudioRaiseVolume
+    wmiir setsid "~/bin/vol-ctl.sh up" &
+Key XF86AudioLowerVolume
+    wmiir setsid "~/bin/vol-ctl.sh down" &
+Key XF86AudioMute
+    wmiir setsid "~/bin/vol-ctl.sh mute" &
+
+Key XF86MonBrightnessUp
+    wmiir setsid "~/bin/brightness-ctl.sh up" &
+Key XF86MonBrightnessDown
+    wmiir setsid "~/bin/brightness-ctl.sh down" &   wmiir setsid "flameshot full --clipboard --path ~/Pictures/Screenshots" &
+!
+
+for i in 1 2 3 4 5 6 7 8 9; do
+wi_events <<!
+Key $MOD-$i
+    wmiir xwrite /ctl view "$i"
+Key $MOD-Shift-$i
+    wmiir xwrite /client/sel/ctl tags "$i"
+!
+done
+
+wi_events -e
+
+# --- window rules ---
+wmiir write /rules <<!
+    /mpv|VLC/ floating=on
+    /Pavucontrol/ floating=on
+!
+
+# --- bar (again) ---
+status() {
+    echo -n "label $(date '+%d-%m-%Y %H:%M')"
+}
+
+IFS="$wi_newline"
+wmiir rm $(wmiir ls -p /lbar) >/dev/null
+seltag=$(wmiir read /tag/sel/ctl | sed 1q)
+unset IFS 
+wi_tags | while read tag
+do
+    if [ "$tag" = "$seltag" ]; then
+        echo colors "$colors_focus"
+        echo label $tag
+    else
+        echo colors "$colors_normal"
+        echo label $tag
+    fi | wmiir create "/lbar/$tag"
+done
+
+action status &
+
+# ----
+wi_eventloop

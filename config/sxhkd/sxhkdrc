@@ -1,0 +1,76 @@
+# ---
+super + q
+    xterm
+
+super + shift + q
+    xterm
+
+super + e
+    pcmanfm
+
+super + d
+    rofi -show drun -theme ~/.local/share/themes/my-theme/rofi/theme.rasi -show-icons 
+
+# ---
+super + c
+    bspc node -c
+
+super + f
+    bspc node -t ~fullscreen
+
+super + v
+    bspc node -t ~floating
+
+# ---
+super + ctrl + l
+    ~/bin/lock.sh
+    
+super + shift + r
+    bspc wm -r
+
+super + Escape
+    ~/bin/power-menu.sh
+
+super + m
+    bspc quit
+
+# ---
+super + {h,j,k,l}
+    bspc node -f {west,south,north,east}
+
+super + shift + {h,j,k,l}
+    bspc node -s {west,south,north,east}
+
+# ---
+super + {1-9}
+    bspc desktop -f {1-9}
+
+super + shift + {1-9}
+    bspc node -d {1-9} --follow
+
+# ---
+Print
+    flameshot gui --path ~/Pictures/Screenshots --raw | xclip -selection clipboard -t image/png
+
+shift + Print
+    flameshot gui
+
+ctrl + Print
+    flameshot full --path ~/Pictures/Screenshots --raw | xclip -selection clipboard -t image/png
+
+# ---
+XF86AudioRaiseVolume
+    ~/bin/vol-ctl.sh up
+
+XF86AudioLowerVolume
+    ~/bin/vol-ctl.sh down
+
+XF86AudioMute
+    ~/bin/vol-ctl.sh mute
+
+# ---
+XF86MonBrightnessUp
+    ~/bin/brightness-ctl.sh up
+
+XF86MonBrightnessDown
+    ~/bin/brightness-ctl.sh down

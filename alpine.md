@@ -1,0 +1,13 @@
+- Enable community repositories.
+- sudo
+- libinput, udev, -mdevd
+- fontconfig
+- enable - udev, udev-postmount, udev-trigger, udev-settle
+- add my user to sudoers files
+- # greetd setup - install, write /etc/greetd/greetd.conf, enable greetd service
+- # NOTE: 'getty's are started directly by busybox init and not by openrc services. i decided to leave the default tty2..6 as the are. but disable tty1 so that greetd can run on it.
+- elogind. add it to boot group.
+- dbus. add it to default group.
+- seatd. enable it.
+- xdg-desktop-portal, xdg-desktop-portal-gtk
+- lsblk
