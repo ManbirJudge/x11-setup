@@ -1,32 +1,37 @@
-- install sudo
-- add user to sudo group
-- disablle install-recommends and install-suggests in apt
-- install vim, neovim, btop, fastfetch, git
-- install xorg xauth x11-utils xinit xclip
-- install xterm
-- install i3, i3status, dunst, feh, rofi, flameshot, picom
-- install fonts-jetbrains-mono, fonts-roboto, papirus-icon-theme, librsvg2-common
-- install pipewire, wireplumber, pipewire-pulse. start them as user services.
-- install pavucontrol
-- install pcmanfm, vlc, gpicview, libreoffice
-- install firefox-esr
-- install brightnessctl, libnotify-bin
-- install herbstluftwm, spectrwm, bspwm, sxhkd
-- IMPORTANT: add official brightnessctl udev rules: https://github.com/Hummer12007/brightnessctl/blob/master/90-brightnessctl.rules
+# Debian X11 Setup
+## Configuration
+- Add your user to `sudo` group.
+- Disablle automatically installing recommended and suggested dependencies in `apt`. Check system dotfile #3.
+- Enable `NetworkManager` service. Disable `wpa_supplicant` service.
+- Enabled `greetd`.
+## System Dotfiles
+1. `/etc/NetworkManager/NetworkManager.conf`
+```
+[main]
+plugins=ifupdown,keyfile
+auth-polkit=false
+
+[ifupdown]
+managed=true
+```
+2. `/etc/greetd/conf.toml`
+```
+[terminal]
+vt = 7
+
+[default_session]
+command = "tuigreet --time --remember --asterisks --cmd startx"
+user = "_greetd"
+```
+3. `/etc/apt/apt.conf.d/99-no-install-extras`
+```
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+```
+4. `/etc/udev/rules.d/90-backlight.rules`
 ```
 ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
 ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
 ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp input /sys/class/leds/%k/brightness"
 ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chmod g+w /sys/class/leds/%k/brightness"
 ```
-- install build-essential, valgrind, cmake, pkg-config, clang, clangd
-- install 
-- install zathura, zathura-pdf-poppler
-- install ffmpegthumbnailer
-- install qt5ct qt6ct qt5-style-kvantum qt6-style-kvantum
-- install BreezeX Cursors manually. place under ~/.icons
-- enable NetworkManager. disable wpa_supplicant. set up /etc/NetworkManager/NetworkManager.conf
-- install vscode
-
-## TODOs
-- BreezeX_Cursor theme not working

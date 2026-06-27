@@ -1,13 +1,30 @@
-- Enable community repositories.
-- sudo
-- libinput, udev, -mdevd
-- fontconfig
-- enable - udev, udev-postmount, udev-trigger, udev-settle
-- add my user to sudoers files
-- # greetd setup - install, write /etc/greetd/greetd.conf, enable greetd service
-- # NOTE: 'getty's are started directly by busybox init and not by openrc services. i decided to leave the default tty2..6 as the are. but disable tty1 so that greetd can run on it.
-- elogind. add it to boot group.
-- dbus. add it to default group.
-- seatd. enable it.
-- xdg-desktop-portal, xdg-desktop-portal-gtk
-- lsblk
+- sudo kbd
+- tar unzip xz
+- wget aria2
+- ffmpeg ffmpeg-libs
+- greetd, greetd-tuigreet, elogind, dbus, polkit, libinput, eudev, seatd
+- xorg-server, xinit, xrandr, xauth, xrdb, xsetroot, xterm, xf86-input-libinput
+- vim neovim fastfetch btop git
+- i3wm i3status bspwm herbstluftwm sxhkd ratpoison awesome spectrwm openbox tint2
+- font-noto font-roboto font-jetbrains-mono
+- papirus-icon-theme
+- feh rofi picom xclip flameshot dunst
+- pcmanfm vlc firefox-esr gpicview zathura zathura-pdf-mudpdf libreoffice
+- qt5ct qt6ct kvantum
+- acl
+<br>
+- enable community repositories. add testing repository
+- allow users in `wheel` groups to use `sudo`
+<br>
+- `rc-update add dbus default`
+- `rc-update add elogind boot`
+- `rc-update add greetd default`
+- `rc-update add seatd default`
+<br>
+- `rc-update add udev sysinit`
+- `rc-update add udev-trigger sysinit`
+- `rc-update add udev-settle sysinit`
+- `rc-update add udev-postmount default`
+<br>
+- what is `libneif-plugins-all`
+- firefox said `libpic` is missing
